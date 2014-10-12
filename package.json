@@ -1,0 +1,16 @@
+{
+  "name": "data-binding-object-observe",
+  "version": "0.0.1",
+  "description": "Data binding plugin based on Object.observe (es7)",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "object.observe",
+    "data",
+    "binding"
+  ],
+  "author": "Olivier Scherrer",
+  "license": "MIT"
+}
