@@ -12,5 +12,11 @@
     "binding"
   ],
   "author": "Olivier Scherrer",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "seam": "0.0.3",
+    "observe-plus": "~1.0.1",
+    "quick-dom": "0.0.1",
+    "seam-view": "0.0.1"
+  }
 }
