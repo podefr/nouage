@@ -4,7 +4,8 @@
   "description": "Data binding plugin based on Object.observe (es7)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha test/*",
+    "watch": "mocha watch test/*"
   },
   "keywords": [
     "object.observe",
@@ -15,8 +16,19 @@
   "license": "MIT",
   "devDependencies": {
     "seam": "0.0.3",
-    "observe-plus": "~1.0.1",
     "quick-dom": "0.0.1",
-    "seam-view": "0.0.1"
+    "seam-view": "0.0.1",
+    "chai": "~1.10.0",
+    "asap": "~2.0.0"
+  },
+  "dependencies": {
+    "compare-numbers": "0.0.1",
+    "get-nodes": "0.0.1",
+    "get-dataset": "0.0.1",
+    "simple-loop": "0.0.3",
+    "nested-property": "0.0.2",
+    "observe-plus": "~2.1.0",
+    "to-array": "~0.1.4",
+    "get-closest": "0.0.2"
   }
 }
