@@ -9,14 +9,16 @@
 
 require("quick-dom");
 
+var expect = require("chai").expect;
+var asap = require("asap");
+
 GLOBAL.SVGElement = document.createElementNS("http://www.w3.org/2000/svg", "ellipse").constructor;
 GLOBAL.HTMLElement = document.body.constructor;
 
 var DataBinding = require("../index"),
-    SeamView = require("seam-view"),
-    observePlus = require("observe-plus");
+    SeamView = require("seam-view");
 
-describe("Given DataBinding AND Seam AND an observed object", function () {
+describe("Given DataBinding, a SeamView, an observed object", function () {
 
     var dataBinding = null,
         seamView = null,
@@ -26,13 +28,11 @@ describe("Given DataBinding AND Seam AND an observed object", function () {
     beforeEach(function () {
         // The object that we want to data bind to, also called the model
         model = {};
-        // We wrap it with observe+ which is based on the powerful Object.observe from ES7
-        dispose = observePlus.observeObject(model);
         // Then we create the data-binding plugin that will bind the object with the DOM
-        dataBinding = new DataBinding();
+        dataBinding = new DataBinding(model);
         // And we add it to seam, which is our declarative way to add behavior to the DOM
         seamView = new SeamView();
-        seamView.seam.addPlugins({
+        seamView.seam.addAll({
             "bind": dataBinding
         });
     });
@@ -46,13 +46,14 @@ describe("Given DataBinding AND Seam AND an observed object", function () {
 
         describe("When applying dataBinding", function () {
             beforeEach(function () {
-                document.body.appendChild(view);
-                seamView.alive(document.querySelector("div"));
+                seamView.template = view;
+                seamView.render();
             });
 
             it("Then the view receives the model's data", function () {
-                expect(document.querySelectorAll("span")[0].innerHTML).toBe("");
-                expect(document.querySelectorAll("span")[1].innerHTML).toBe("");
+                debugger;
+                expect(seamView.dom.querySelectorAll("span")[0].innerHTML).to.equal("");
+                expect(seamView.dom.querySelectorAll("span")[1].innerHTML).to.equal("");
             });
 
             describe("When values are set", function () {
@@ -61,9 +62,12 @@ describe("Given DataBinding AND Seam AND an observed object", function () {
                     model.lastname = "Binding";
                 });
 
-                it("Then the view receives the model's data", function () {
-                    expect(document.querySelectorAll("span")[0].innerHTML).toBe("Data");
-                    expect(document.querySelectorAll("span")[1].innerHTML).toBe("Binding");
+                it("Then the view receives the model's data", function (done) {
+                    asap(function () {
+                        expect(seamView.dom.querySelectorAll("span")[0].innerHTML).to.equal("Data");
+                        expect(seamView.dom.querySelectorAll("span")[1].innerHTML).to.equal("Binding");
+                        done();
+                    });
                 });
             });
         });
