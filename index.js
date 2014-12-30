@@ -507,29 +507,29 @@ module.exports = function BindPluginConstructor($model, $bindings) {
             prop = id ? name : split.join("."),
 
         // Get the model's value
-            get = nestedProperty.get(_model[modelIdx], prop),
+            val = nestedProperty.get(_model[modelIdx], prop),
 
         // When calling bind like bind:newBinding,param1, param2... we need to get them
             extraParam = toArray(arguments).slice(3);
 
         // 0 and false are acceptable falsy values
-        if (get || get === 0 || get === false) {
+        if (val || val === 0 || val === false) {
             // If the binding hasn't been overriden
             if (!this.execBinding.apply(this,
-                [node, property, get]
+                [node, property, val]
                     // Extra params are passed to the new binding too
                     .concat(extraParam))) {
                 // Execute the default one which is a simple assignation
                 //node[property] = get;
-                setAttribute(node, property, get);
+                setAttribute(node, property, val);
             }
         }
 
-        // Only watch for changes (double way data binding) if the binding
+        // Only watch for changes (two way data binding) if the binding
         // has not been redefined
         if (!this.hasBinding(property)) {
             node.addEventListener("change", function (event) {
-                if (_model.has(modelIdx)) {
+                if (modelIdx in _model) {
                     if (prop) {
                         _model.update(modelIdx, name, node[property]);
                     } else {

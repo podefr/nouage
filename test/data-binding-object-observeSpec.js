@@ -27,7 +27,9 @@ describe("Given DataBinding, a SeamView, an observed object", function () {
 
     beforeEach(function () {
         // The object that we want to data bind to, also called the model
-        model = {};
+        model = {
+            firstname: "Data"
+        };
         // Then we create the data-binding plugin that will bind the object with the DOM
         dataBinding = new DataBinding(model);
         // And we add it to seam, which is our declarative way to add behavior to the DOM
@@ -45,27 +47,43 @@ describe("Given DataBinding, a SeamView, an observed object", function () {
             '</div>';
 
         describe("When applying dataBinding", function () {
+            var dom;
             beforeEach(function () {
                 seamView.template = view;
                 seamView.render();
+                dom = seamView.dom;
             });
 
-            it("Then the view receives the model's data", function () {
-                debugger;
-                expect(seamView.dom.querySelectorAll("span")[0].innerHTML).to.equal("");
-                expect(seamView.dom.querySelectorAll("span")[1].innerHTML).to.equal("");
+            it("Then the view receives the model's data", function (done) {
+                asap(function () {
+                    expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("Data");
+                    expect(dom.querySelectorAll("span")[1].innerHTML).to.equal("");
+                    done();
+                });
             });
 
-            describe("When values are set", function () {
+            describe("When properties are updated", function () {
                 beforeEach(function () {
-                    model.firstname = "Data";
                     model.lastname = "Binding";
                 });
 
                 it("Then the view receives the model's data", function (done) {
                     asap(function () {
-                        expect(seamView.dom.querySelectorAll("span")[0].innerHTML).to.equal("Data");
-                        expect(seamView.dom.querySelectorAll("span")[1].innerHTML).to.equal("Binding");
+                        expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("Data");
+                        expect(dom.querySelectorAll("span")[1].innerHTML).to.equal("Binding");
+                        done();
+                    });
+                });
+            });
+
+            describe("When properties are deleted", function () {
+               beforeEach(function () {
+                   delete model.firstname;
+               });
+
+                it("Then the view is updated", function (done) {
+                    asap(function () {
+                        expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("");
                         done();
                     });
                 });
