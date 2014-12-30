@@ -42,9 +42,10 @@ describe("Given DataBinding, a SeamView, an observed object", function () {
     describe("And an html view with bindings", function () {
 
         var view = '<div>' +
-            '<span data-bind="bind:innerHTML,firstname"></span>' +
-            '<span data-bind="bind:innerHTML,lastname"></span>' +
-            '<span data-bind="bind:innerHTML,phone"></span>' +
+            '<span data-bind="bind:innerHTML, firstname"></span>' +
+            '<span data-bind="bind:innerHTML, lastname"></span>' +
+            '<span data-bind="bind:innerHTML, phone"></span>' +
+            '<span data-bind="bind:innerHTML, email.work.main"></span>' +
             '</div>';
 
         describe("When applying dataBinding", function () {
@@ -100,6 +101,36 @@ describe("Given DataBinding, a SeamView, an observed object", function () {
                     asap(function () {
                         expect(dom.querySelectorAll("span")[2].innerHTML).to.equal("123-456-7890");
                         done();
+                    });
+                });
+            });
+
+            describe("When properties are nested", function () {
+                beforeEach(function () {
+                    model.email = {
+                        work: {
+                            main: "work@email.com"
+                        }
+                    };
+                });
+
+                it("Then the view is updated", function (done) {
+                    asap(function () {
+                        expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("work@email.com");
+                        done();
+                    });
+                });
+
+                describe("When the property is updated", function () {
+                    beforeEach(function () {
+                        model.email.work.main = "new-work@email.com";
+                    });
+
+                    it("Then updates the view", function (done) {
+                        asap(function () {
+                            expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("new-work@email.com");
+                            done();
+                        });
                     });
                 });
             });
