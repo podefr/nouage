@@ -44,6 +44,7 @@ describe("Given DataBinding, a SeamView, an observed object", function () {
         var view = '<div>' +
             '<span data-bind="bind:innerHTML,firstname"></span>' +
             '<span data-bind="bind:innerHTML,lastname"></span>' +
+            '<span data-bind="bind:innerHTML,phone"></span>' +
             '</div>';
 
         describe("When applying dataBinding", function () {
@@ -58,6 +59,7 @@ describe("Given DataBinding, a SeamView, an observed object", function () {
                 asap(function () {
                     expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("Data");
                     expect(dom.querySelectorAll("span")[1].innerHTML).to.equal("");
+                    expect(dom.querySelectorAll("span")[2].innerHTML).to.equal("");
                     done();
                 });
             });
@@ -84,6 +86,19 @@ describe("Given DataBinding, a SeamView, an observed object", function () {
                 it("Then the view is updated", function (done) {
                     asap(function () {
                         expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("");
+                        done();
+                    });
+                });
+            });
+
+            describe("When properties are added", function () {
+                beforeEach(function () {
+                    model.phone = "123-456-7890";
+                });
+
+                it("Then the view is updated", function (done) {
+                    asap(function () {
+                        expect(dom.querySelectorAll("span")[2].innerHTML).to.equal("123-456-7890");
                         done();
                     });
                 });
