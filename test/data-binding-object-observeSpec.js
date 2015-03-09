@@ -1,9 +1,9 @@
 /**
- * @license data-binding-object-observe https://github.com/...tbd..
+ * @license nouage https://github.com/podefr/nouage
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Olivier Scherrer <pode.fr@gmail.com>
+ * Copyright (c) 2014-2015 Olivier Scherrer <pode.fr@gmail.com>
  */
 "use strict";
 

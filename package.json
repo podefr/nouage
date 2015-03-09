@@ -1,7 +1,7 @@
 {
-  "name": "data-binding-object-observe",
-  "version": "0.0.1",
-  "description": "Data binding plugin based on Object.observe (es7)",
+  "name": "nouage",
+  "version": "0.0.1-wip",
+  "description": "Standalone data binding plugin based on Object.observe (es7)",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/*",
@@ -10,7 +10,8 @@
   "keywords": [
     "object.observe",
     "data",
-    "binding"
+    "binding",
+    "standalone"
   ],
   "author": "Olivier Scherrer",
   "license": "MIT",
