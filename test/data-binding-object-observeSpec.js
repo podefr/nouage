@@ -15,12 +15,12 @@ var asap = require("asap");
 GLOBAL.SVGElement = document.createElementNS("http://www.w3.org/2000/svg", "ellipse").constructor;
 GLOBAL.HTMLElement = document.body.constructor;
 
-var DataBinding = require("../index"),
+var Nouage = require("../index"),
     SeamView = require("seam-view");
 
-describe("Given DataBinding, a SeamView, an observed object", function () {
+describe("Given Nouage, a SeamView, an observed object", function () {
 
-    var dataBinding = null,
+    var nouage = null,
         seamView = null,
         model,
         dispose;
@@ -31,11 +31,11 @@ describe("Given DataBinding, a SeamView, an observed object", function () {
             firstname: "Data"
         };
         // Then we create the data-binding plugin that will bind the object with the DOM
-        dataBinding = new DataBinding(model);
+        nouage = new Nouage(model);
         // And we add it to seam, which is our declarative way to add behavior to the DOM
         seamView = new SeamView();
         seamView.seam.addAll({
-            "bind": dataBinding
+            "bind": nouage
         });
     });
 
