@@ -28,8 +28,8 @@
     "get-dataset": "0.0.1",
     "simple-loop": "0.0.3",
     "nested-property": "0.0.2",
-    "observe-plus": "~2.1.0",
     "to-array": "~0.1.4",
-    "get-closest": "0.0.2"
+    "get-closest": "0.0.2",
+    "observe-plus": "~3.0.3-beta"
   }
 }
