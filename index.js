@@ -493,21 +493,8 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         // Name can be unset if the value of a row is plain text
         name = name || "";
 
-        // In case of an array-like model the id is the index of the model's item to look for.
-        // The _id is added by the foreach function
-        var id = node.getAttribute("data-" + this.plugins.name+"_id"),
-
-        // Else, it is the first element of the following
-            split = name.split("."),
-
-        // So the index of the model is either id or the first element of split
-            modelIdx = id || split.shift(),
-
-        // And the name of the property to look for in the value is
-            prop = id ? name : split.join("."),
-
         // Get the model's value
-            val = nestedProperty.get(_model[modelIdx], prop),
+            var val = nestedProperty.get(_model, name),
 
         // When calling bind like bind:newBinding,param1, param2... we need to get them
             extraParam = toArray(arguments).slice(3);
@@ -528,29 +515,26 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         // Only watch for changes (two way data binding) if the binding
         // has not been redefined
         if (!this.hasBinding(property)) {
-            node.addEventListener("change", function (event) {
-                if (modelIdx in _model) {
-                    if (prop) {
-                        _model.update(modelIdx, name, node[property]);
-                    } else {
-                        _model.set(modelIdx, node[property]);
-                    }
+            node.addEventListener("change", function () {
+                if (nestedProperty.has(_model, name)) {
+                    nestedProperty.set(_model, name, node[property]);
                 }
             }, true);
 
         }
 
         // Watch for changes
-        this.observers[modelIdx] = this.observers[modelIdx] || [];
-        this.observers[modelIdx].push(_observer.observeValue(modelIdx, function (valueObj) {
-            var value = valueObj.object[modelIdx];
+        this.observers[name] = this.observers[name] || [];
+
+        this.observers[name].push(_observer.observeValue(name, function (event) {
+            var value = event.value;
 
             if (!this.execBinding.apply(this,
-                [node, property, nestedProperty.get(value, prop)]
+                [node, property, value]
                     // passing extra params too
                     .concat(extraParam))) {
 
-                setAttribute(node, property, nestedProperty.get(value, prop));
+                setAttribute(node, property, value);
             }
         }, this));
 
