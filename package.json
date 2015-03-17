@@ -4,8 +4,8 @@
   "description": "Standalone data binding plugin based on Object.observe (es7)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*",
-    "watch": "mocha watch test/*"
+    "test": "mocha --harmony test/*",
+    "watch": "mocha --harmony watch test/*"
   },
   "keywords": [
     "object.observe",
