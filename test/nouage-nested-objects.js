@@ -47,7 +47,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
             '<span data-bind="bind:innerHTML, email.work.main"></span>' +
             '</div>';
 
-        describe("When applying dataBinding", function () {
+        describe("When applying nouage", function () {
             var dom;
             beforeEach(function () {
                 seamView.template = view;
