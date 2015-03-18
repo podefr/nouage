@@ -68,7 +68,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                 });
             });
 
-            describe.only("When changing the value of the input field", function () {
+            describe("When changing the value of the input field", function () {
                 beforeEach(function () {
                     sendKeys(dom.querySelector("input"), "Bindings");
                 });
@@ -81,8 +81,47 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                 });
             });
         });
+    });
 
+    describe("And an html view with deeply nested bindings", function () {
 
+        var view = '<form>' +
+            '<input type="text" data-bind="bind:value, phone.work.0"></span>' +
+            '</form>';
+
+        describe("When applying nouage", function () {
+            var dom;
+
+            beforeEach(function () {
+                seamView.template = view;
+                seamView.render();
+                dom = seamView.dom;
+
+                model.phone = {
+                    work: [ 123 ]
+                };
+            });
+
+            it("Then sets the value into the input field", function (done) {
+                asap(function () {
+                    expect(dom.querySelector("input").value).to.equal("123");
+                    done();
+                });
+            });
+
+            describe("When changing the value of the input field", function () {
+                beforeEach(function () {
+                    sendKeys(dom.querySelector("input"), "3210");
+                });
+
+                it("Then sets the value into the model", function (done) {
+                    asap(function () {
+                        expect(model.phone.work[0]).to.equal("3210");
+                        done();
+                    });
+                });
+            });
+        });
     });
 
 });
