@@ -40,30 +40,30 @@ module.exports = function BindPluginConstructor($model, $bindings) {
      */
     var _model = null,
 
-        /**
-         * The list of custom bindings
-         * @private
-         */
-        _bindings = {},
+    /**
+     * The list of custom bindings
+     * @private
+     */
+    _bindings = {},
 
-        /**
-         * The list of itemRenderers
-         * each foreach has its itemRenderer
-         * @private
-         */
-        _itemRenderers = {},
+    /**
+     * The list of itemRenderers
+     * each foreach has its itemRenderer
+     * @private
+     */
+    _itemRenderers = {},
 
-        /**
-         * The observers handlers
-         * @private
-         */
-        _observers = {},
+    /**
+     * The observers handlers
+     * @private
+     */
+    _observers = {},
 
-        /**
-         * The observe-plus wrapper
-         * @private
-         */
-        _observer;
+    /**
+     * The observe-plus wrapper
+     * @private
+     */
+    _observer;
 
     /**
      * Exposed for debugging purpose

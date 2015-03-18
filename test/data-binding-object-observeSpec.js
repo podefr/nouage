@@ -22,8 +22,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
 
     var nouage = null,
         seamView = null,
-        model,
-        dispose;
+        model;
 
     beforeEach(function () {
         // The object that we want to data bind to, also called the model
@@ -90,6 +89,19 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                         done();
                     });
                 });
+
+                describe("When properties are added back", function () {
+                    beforeEach(function () {
+                        model.firstname = "DataBack";
+                    });
+
+                    it("Then updates the dom again", function (done) {
+                        asap(function () {
+                            expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("DataBack");
+                            done();
+                        });
+                    });
+                });
             });
 
             describe("When properties are added", function () {
@@ -130,6 +142,62 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                         asap(function () {
                             expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("new-work@email.com");
                             done();
+                        });
+                    });
+                });
+
+                describe("When the property is deleted", function () {
+                    beforeEach(function () {
+                        delete model.email.work.main;
+                    });
+
+                    it("Then updates the view", function (done) {
+                        asap(function () {
+                            expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("");
+                            done();
+                        });
+                    });
+
+                    describe("And added back", function () {
+                        beforeEach(function () {
+                            model.email.work.main = "new-work@email.com";
+                        });
+
+                        it("Then updates the view again", function (done) {
+                            asap(function () {
+                                expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("new-work@email.com");
+                                done();
+                            });
+                        });
+                    });
+                });
+
+                describe("When a parent property is deleted", function () {
+                    beforeEach(function () {
+                        delete model.email;
+                    });
+
+                    it("Then updates the view", function (done) {
+                        asap(function () {
+                            expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("");
+                            done();
+                        });
+                    });
+
+                    describe("And added back", function () {
+                        beforeEach(function () {
+                            model.email = {
+                                work: {
+                                    main: "new-work@email.com"
+                                }
+                            };
+                        });
+
+                        it("Then updates the view again", function (done) {
+                            asap(function () {
+                                expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("new-work@email.com");
+                                done();
+                            });
                         });
                     });
                 });
