@@ -27,7 +27,7 @@
     "get-nodes": "0.0.1",
     "get-dataset": "0.0.1",
     "simple-loop": "0.0.3",
-    "nested-property": "0.0.2",
+    "nested-property": "0.0.6",
     "to-array": "~0.1.4",
     "get-closest": "0.0.2",
     "observe-plus": "~3.0.3-beta"
