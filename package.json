@@ -17,7 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "seam": "0.0.3",
-    "quick-dom": "0.0.1",
+    "quick-dom": "0.0.2",
     "seam-view": "0.0.1",
     "chai": "~1.10.0",
     "asap": "~2.0.0"
