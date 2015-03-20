@@ -91,6 +91,24 @@ describe("Given Nouage, a SeamView, an observed array", function () {
                     done();
                 });
             });
+
+            describe.only("When the model is updated", function () {
+                beforeEach(function () {
+                    model[0].firstname = "new Data1";
+                    model[2].email.main = "new work@email.com3";
+                });
+
+                it("Then updates the view with the new data", function (done) {
+                    asap(function () {
+                        var firstLi = dom.querySelectorAll("li")[0];
+                        expect(firstLi.querySelectorAll("span")[0].innerHTML).to.equal("new Data1");
+
+                        var thirdLi = dom.querySelectorAll("li")[2];
+                        expect(thirdLi.querySelectorAll("span")[2].innerHTML).to.equal("new work@email.com3");
+                        done();
+                    });
+                });
+            });
         });
     });
 });
