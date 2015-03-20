@@ -74,7 +74,7 @@ module.exports = function BindPluginConstructor($model, $bindings) {
     function _removeObserversForId(id) {
         if (_observers[id]) {
             _observers[id].forEach(function (handler) {
-                _model.unwatchValue(handler);
+                handler();
             });
             delete _observers[id];
         }
@@ -323,12 +323,12 @@ module.exports = function BindPluginConstructor($model, $bindings) {
          * @returns the associated node
          */
         this.create = function create(id) {
-            if (_model.has(id)) {
+            if (id in _model) {
                 var newNode = _node.cloneNode(true),
                     nodes = getNodes(newNode);
 
                 toArray(nodes).forEach(function (child) {
-                    child.setAttribute("data-" + _plugins.name+"_id", id);
+                    child.setAttribute("data-" + _plugins.name + "_id", id);
                 });
 
                 this.items[id] = newNode;
@@ -346,7 +346,7 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         this.render = function render() {
             // If the number of items to render is all (*)
             // Then get the number of items
-            var _tmpNb = _nb == "*" ? _model.count() : _nb;
+            var _tmpNb = _nb == "*" ? _model.length : _nb;
 
             // This will store the items to remove
             var marked = [];
@@ -359,7 +359,7 @@ module.exports = function BindPluginConstructor($model, $bindings) {
                     // If an item is out of the boundary
                     idx = Number(idx);
 
-                    if (idx < _start || idx >= (_start + _tmpNb) || !_model.has(idx)) {
+                    if (idx < _start || idx >= (_start + _tmpNb) || !idx in _model) {
                         // Mark it
                         marked.push(idx);
                     }
@@ -423,10 +423,10 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         itemRenderer.render();
 
         // Add the newly created item
-        _model.watch("added", itemRenderer.render, itemRenderer);
+        _observer.observe("added", itemRenderer.render, itemRenderer);
 
         // If an item is deleted
-        _model.watch("deleted", function (idx) {
+        _observer.observe("deleted", function (idx) {
             itemRenderer.render();
             // Also remove all observers
             _removeObserversForId(idx);
@@ -489,14 +489,18 @@ module.exports = function BindPluginConstructor($model, $bindings) {
      * @returns
      */
     this.bind = function bind(node, property, name) {
-
         // Name can be unset if the value of a row is plain text
         name = name || "";
 
-        // Get the model's value
-            var val = nestedProperty.get(_model, name),
+        // If the model is an array, the id is the index of the model's item to look for
+        var id = node.getAttribute("data-" + this.plugins.name + "_id"),
 
-        // When calling bind like bind:newBinding,param1, param2... we need to get them
+            prefixedName = id ? id + "." + name : name,
+
+            // Get the model's value
+             val = nestedProperty.get(_model, prefixedName),
+
+            // When calling bind like bind:newBinding,param1, param2... we need to get them
             extraParam = toArray(arguments).slice(3);
 
         // 0 and false are acceptable falsy values
@@ -507,7 +511,7 @@ module.exports = function BindPluginConstructor($model, $bindings) {
                     // Extra params are passed to the new binding too
                     .concat(extraParam))) {
                 // Execute the default one which is a simple assignation
-                //node[property] = get;
+
                 setAttribute(node, property, val);
             }
         }
@@ -516,17 +520,16 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         // has not been redefined
         if (!this.hasBinding(property)) {
             node.addEventListener("change", function () {
-                if (nestedProperty.has(_model, name)) {
-                    nestedProperty.set(_model, name, node[property]);
+                if (nestedProperty.has(_model, prefixedName)) {
+                    nestedProperty.set(_model, prefixedName, node[property]);
                 }
             }, true);
-
         }
 
         // Watch for changes
-        this.observers[name] = this.observers[name] || [];
+        this.observers[prefixedName] = this.observers[prefixedName] || [];
 
-        this.observers[name].push(_observer.observeValue(name, function (event) {
+        this.observers[prefixedName].push(_observer.observeValue(prefixedName, function (event) {
             var value = event.value;
 
             if (!this.execBinding.apply(this,
@@ -538,21 +541,6 @@ module.exports = function BindPluginConstructor($model, $bindings) {
             }
         }, this));
 
-    };
-
-    /**
-     * Set the node's value into the model, the name is the model's property
-     * @private
-     * @param {HTMLElement|SVGElement} node
-     * @returns true if the property is added
-     */
-    this.set = function set(node) {
-        if (node.name) {
-            _model.set(node.name, node.value);
-            return true;
-        } else {
-            return false;
-        }
     };
 
     this.getItemIndex = function getElementId(dom) {
