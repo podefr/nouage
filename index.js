@@ -269,27 +269,6 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         };
 
         /**
-         * Get the next item in the item store given an id.
-         * @private
-         * @param {Number} id the id to start from
-         * @returns
-         */
-        this.getNextItem = function getNextItem(id) {
-            var keys = Object.keys(this.items).map(function (string) {
-                    return Number(string);
-                }),
-                closest = getClosest.greaterNumber(id, keys),
-                closestId = keys[closest];
-
-            // Only return if different
-            if (closestId != id) {
-                return this.items[closestId];
-            } else {
-                return;
-            }
-        };
-
-        /**
          * Remove an item from the dom and the items list
          * @private
          * @param {Number} id the id of the item to remove
