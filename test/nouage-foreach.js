@@ -110,7 +110,7 @@ describe("Given Nouage, a SeamView, an observed array", function () {
                 });
             });
 
-            describe.only("When an item is removed from the model", function () {
+            describe("When an item is removed from the model", function () {
                 beforeEach(function () {
                     model.splice(1, 1);
                 });
