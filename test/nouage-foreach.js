@@ -132,6 +132,19 @@ describe("Given Nouage, a SeamView, an observed array", function () {
                     });
                 });
             });
+
+            describe("When several items are removed from the model", function () {
+                beforeEach(function () {
+                    model.length = 0;
+                });
+
+                it("Then removes all items from the view", function (done) {
+                    asap(function () {
+                        expect(dom.querySelectorAll("li").length).to.equal(0);
+                        done();
+                    });
+                });
+            });
         });
     });
 });

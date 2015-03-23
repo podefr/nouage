@@ -427,9 +427,11 @@ module.exports = function BindPluginConstructor($model, $bindings) {
 
         // If an item is deleted
         _observer.observe("splice", function (event) {
-            itemRenderer.removeItem(event.index);
-            // Also remove all observers
-            _removeObserversForId(event.index);
+            event.removed.forEach(function (removedItem, idx) {
+                itemRenderer.removeItem(+event.index + idx);
+                // Also remove all observers
+                _removeObserversForId(+event.index + idx);
+            });
         },this);
 
         this.setItemRenderer(idItemRenderer, itemRenderer);
