@@ -426,10 +426,10 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         _observer.observe("added", itemRenderer.render, itemRenderer);
 
         // If an item is deleted
-        _observer.observe("deleted", function (idx) {
-            itemRenderer.render();
+        _observer.observe("splice", function (event) {
+            itemRenderer.removeItem(event.index);
             // Also remove all observers
-            _removeObserversForId(idx);
+            _removeObserversForId(event.index);
         },this);
 
         this.setItemRenderer(idItemRenderer, itemRenderer);

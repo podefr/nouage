@@ -92,7 +92,7 @@ describe("Given Nouage, a SeamView, an observed array", function () {
                 });
             });
 
-            describe.only("When the model is updated", function () {
+            describe("When properties are updated", function () {
                 beforeEach(function () {
                     model[0].firstname = "new Data1";
                     model[2].email.main = "new work@email.com3";
@@ -105,6 +105,29 @@ describe("Given Nouage, a SeamView, an observed array", function () {
 
                         var thirdLi = dom.querySelectorAll("li")[2];
                         expect(thirdLi.querySelectorAll("span")[2].innerHTML).to.equal("new work@email.com3");
+                        done();
+                    });
+                });
+            });
+
+            describe.only("When an item is removed from the model", function () {
+                beforeEach(function () {
+                    model.splice(1, 1);
+                });
+
+                it("Then removes the item from the view", function (done) {
+                    asap(function () {
+                        expect(dom.querySelectorAll("li").length).to.equal(2);
+
+                        var firstLi = dom.querySelectorAll("li")[0];
+                        expect(firstLi.querySelectorAll("span")[0].innerHTML).to.equal("Data1");
+                        expect(firstLi.querySelectorAll("span")[1].innerHTML).to.equal("Binding1");
+                        expect(firstLi.querySelectorAll("span")[2].innerHTML).to.equal("work@email.com1");
+
+                        var secondLi = dom.querySelectorAll("li")[1];
+                        expect(secondLi.querySelectorAll("span")[0].innerHTML).to.equal("Data3");
+                        expect(secondLi.querySelectorAll("span")[1].innerHTML).to.equal("Binding3");
+                        expect(secondLi.querySelectorAll("span")[2].innerHTML).to.equal("work@email.com3");
                         done();
                     });
                 });
