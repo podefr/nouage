@@ -10,7 +10,6 @@
 var compareNumbers = require("compare-numbers"),
     simpleLoop = require("simple-loop"),
     toArray = require("to-array"),
-    getClosest = require("get-closest"),
     nestedProperty = require("nested-property"),
     getNodes = require("get-nodes"),
     getDataset =  require("get-dataset"),
