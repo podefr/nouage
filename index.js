@@ -253,19 +253,12 @@ module.exports = function BindPluginConstructor($model, $bindings) {
          * @returns
          */
         this.addItem = function addItem(id) {
-            var node,
-                next;
+            var node;
 
             if (typeof id == "number" && !this.items[id]) {
-                next = this.getNextItem(id);
                 node = this.create(id);
                 if (node) {
-                    // IE (until 9) apparently fails to appendChild when insertBefore's second argument is null, hence this.
-                    if (next) {
-                        _rootNode.insertBefore(node, next);
-                    } else {
-                        _rootNode.appendChild(node);
-                    }
+                    _rootNode.appendChild(node);
                     return true;
                 } else {
                     return false;
