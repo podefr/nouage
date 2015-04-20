@@ -134,7 +134,21 @@ module.exports = function BindPluginConstructor($model, $bindings) {
              * The number of item to display
              * @private
              */
-            _nb = null;
+            _nb = null,
+
+            /**
+             * Keep track by item of the dom elements that are created
+             * @type {Window.WeakMap}
+             * @private
+             */
+            _domMap = new WeakMap(),
+
+            /**
+             * Keep track by index of the dom elements that are created
+             * @type {Array}
+             * @private
+             */
+            _items = [];
 
         /**
          * Set the duplicated node
@@ -200,12 +214,6 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         };
 
         /**
-         * The nodes created from the items are stored here
-         * @private
-         */
-        this.items = {};
-
-        /**
          * Set the start limit
          * @private
          * @param {Number} start the value to start rendering the items from
@@ -254,7 +262,7 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         this.addItem = function addItem(id) {
             var node;
 
-            if (typeof id == "number" && !this.items[id]) {
+            if (typeof id == "number" && !_items[id]) {
                 node = this.create(id);
                 if (node) {
                     _rootNode.appendChild(node);
@@ -273,12 +281,32 @@ module.exports = function BindPluginConstructor($model, $bindings) {
          * @param {Number} id the id of the item to remove
          * @returns
          */
-        this.removeItem = function removeItem(id) {
-            var item = this.items[id];
-            if (item) {
-                _rootNode.removeChild(item);
-                delete this.items[id];
+        this.removeItemById = function removeItemById(id) {
+            var domElement = _items[id];
+            if (domElement) {
+                _rootNode.removeChild(domElement);
+                delete _items[id];
                 _removeObserversForId(id);
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        /**
+         * Remove an item from the dom given the item itself
+         * @param item
+         * @returns {boolean}
+         */
+        this.removeItemByItem = function removeItemByItem(item) {
+            var domElement = _domMap.get(item);
+            var index;
+            if (domElement) {
+                _rootNode.removeChild(domElement);
+                _domMap.delete(item);
+                index = _items.indexOf(domElement);
+                delete _items[index];
+                _removeObserversForId(index);
                 return true;
             } else {
                 return false;
@@ -302,7 +330,9 @@ module.exports = function BindPluginConstructor($model, $bindings) {
                     child.setAttribute("data-" + _plugins.name + "_id", id);
                 });
 
-                this.items[id] = newNode;
+                _items[id] = newNode;
+
+                _domMap.set(_model[id], newNode);
                 _plugins.apply(newNode);
                 return newNode;
             }
@@ -326,7 +356,7 @@ module.exports = function BindPluginConstructor($model, $bindings) {
             if (_nb !== null && _start !== null) {
 
                 // Loop through the existing items
-                simpleLoop(this.items, function (value, idx) {
+                simpleLoop(_items, function (value, idx) {
                     // If an item is out of the boundary
                     idx = Number(idx);
 
@@ -339,7 +369,7 @@ module.exports = function BindPluginConstructor($model, $bindings) {
                 // Remove the marked item from the highest id to the lowest
                 // Doing this will avoid the id change during removal
                 // (removing id 2 will make id 3 becoming 2)
-                marked.sort(compareNumbers.desc).forEach(this.removeItem, this);
+                marked.sort(compareNumbers.desc).forEach(this.removeItemById, this);
 
                 // Now that we have removed the old nodes
                 // Add the missing one
@@ -398,13 +428,8 @@ module.exports = function BindPluginConstructor($model, $bindings) {
 
         // If an item is deleted
         _observer.observe("splice", function (event) {
-            event.removed.forEach(function (removedItem, idx) {
-                itemRenderer.removeItem(+event.index + idx);
-                // Also remove all observers
-                _removeObserversForId(+event.index + idx);
-            });
-        },this);
-
+            event.removed.forEach(itemRenderer.removeItemByItem, itemRenderer);
+        });
         this.setItemRenderer(idItemRenderer, itemRenderer);
     };
 
