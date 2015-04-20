@@ -10,7 +10,6 @@
 require("quick-dom");
 
 var expect = require("chai").expect;
-var asap = require("asap");
 
 GLOBAL.SVGElement = document.createElementNS("http://www.w3.org/2000/svg", "ellipse").constructor;
 GLOBAL.HTMLElement = document.body.constructor;
@@ -73,7 +72,7 @@ describe("Given Nouage, a SeamView, an observed array", function () {
             });
 
             it("Then the view receives the model's data", function (done) {
-                asap(function () {
+                setImmediate(function () {
                     var firstLi = dom.querySelectorAll("li")[0];
                     expect(firstLi.querySelectorAll("span")[0].innerHTML).to.equal("Data1");
                     expect(firstLi.querySelectorAll("span")[1].innerHTML).to.equal("Binding1");
@@ -99,7 +98,7 @@ describe("Given Nouage, a SeamView, an observed array", function () {
                 });
 
                 it("Then updates the view with the new data", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         var firstLi = dom.querySelectorAll("li")[0];
                         expect(firstLi.querySelectorAll("span")[0].innerHTML).to.equal("new Data1");
 
@@ -116,7 +115,7 @@ describe("Given Nouage, a SeamView, an observed array", function () {
                 });
 
                 it("Then removes the item from the view", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         expect(dom.querySelectorAll("li").length).to.equal(2);
 
                         var firstLi = dom.querySelectorAll("li")[0];
@@ -139,10 +138,28 @@ describe("Given Nouage, a SeamView, an observed array", function () {
                 });
 
                 it("Then removes all items from the view", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         expect(dom.querySelectorAll("li").length).to.equal(0);
                         done();
                     });
+                });
+            });
+
+            describe("When sparse items are removed from the model", function () {
+                beforeEach(function () {
+                    model.splice(0, 1);
+                    model.pop();
+                });
+
+                it("Then removes the items from the view", function (done) {
+                    setTimeout(function () {
+                        expect(dom.querySelectorAll("li").length).to.equal(1);
+                        var firstLi = dom.querySelectorAll("li")[0];
+                        expect(firstLi.querySelectorAll("span")[0].innerHTML).to.equal("Data2");
+                        expect(firstLi.querySelectorAll("span")[1].innerHTML).to.equal("Binding2");
+                        expect(firstLi.querySelectorAll("span")[2].innerHTML).to.equal("work@email.com2");
+                        done();
+                    }, 0);
                 });
             });
         });

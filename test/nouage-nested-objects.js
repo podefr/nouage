@@ -10,7 +10,6 @@
 require("quick-dom");
 
 var expect = require("chai").expect;
-var asap = require("asap");
 
 GLOBAL.SVGElement = document.createElementNS("http://www.w3.org/2000/svg", "ellipse").constructor;
 GLOBAL.HTMLElement = document.body.constructor;
@@ -56,7 +55,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
             });
 
             it("Then the view receives the model's data", function (done) {
-                asap(function () {
+                setImmediate(function () {
                     expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("Data");
                     expect(dom.querySelectorAll("span")[1].innerHTML).to.equal("");
                     expect(dom.querySelectorAll("span")[2].innerHTML).to.equal("");
@@ -70,7 +69,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                 });
 
                 it("Then the view receives the model's data", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("Data");
                         expect(dom.querySelectorAll("span")[1].innerHTML).to.equal("Binding");
                         done();
@@ -84,7 +83,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                });
 
                 it("Then the view is updated", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("");
                         done();
                     });
@@ -96,7 +95,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                     });
 
                     it("Then updates the dom again", function (done) {
-                        asap(function () {
+                        setImmediate(function () {
                             expect(dom.querySelectorAll("span")[0].innerHTML).to.equal("DataBack");
                             done();
                         });
@@ -110,7 +109,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                 });
 
                 it("Then the view is updated", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         expect(dom.querySelectorAll("span")[2].innerHTML).to.equal("123-456-7890");
                         done();
                     });
@@ -127,7 +126,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                 });
 
                 it("Then the view is updated", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("work@email.com");
                         done();
                     });
@@ -139,7 +138,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                     });
 
                     it("Then updates the view", function (done) {
-                        asap(function () {
+                        setImmediate(function () {
                             expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("new-work@email.com");
                             done();
                         });
@@ -152,7 +151,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                     });
 
                     it("Then updates the view", function (done) {
-                        asap(function () {
+                        setImmediate(function () {
                             expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("");
                             done();
                         });
@@ -164,7 +163,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                         });
 
                         it("Then updates the view again", function (done) {
-                            asap(function () {
+                            setImmediate(function () {
                                 expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("new-work@email.com");
                                 done();
                             });
@@ -178,7 +177,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                     });
 
                     it("Then updates the view", function (done) {
-                        asap(function () {
+                        setImmediate(function () {
                             expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("");
                             done();
                         });
@@ -194,7 +193,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                         });
 
                         it("Then updates the view again", function (done) {
-                            asap(function () {
+                            setImmediate(function () {
                                 expect(dom.querySelectorAll("span")[3].innerHTML).to.equal("new-work@email.com");
                                 done();
                             });

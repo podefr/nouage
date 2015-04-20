@@ -10,7 +10,6 @@
 require("quick-dom");
 
 var expect = require("chai").expect;
-var asap = require("asap");
 
 GLOBAL.SVGElement = document.createElementNS("http://www.w3.org/2000/svg", "ellipse").constructor;
 GLOBAL.HTMLElement = document.body.constructor;
@@ -62,7 +61,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
             });
 
             it("Then sets the value into the input field", function (done) {
-                asap(function () {
+                setImmediate(function () {
                     expect(dom.querySelector("input").value).to.equal("Data");
                     done();
                 });
@@ -74,7 +73,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                 });
 
                 it("Then sets the value into the model", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         expect(model.firstname).to.equal("Bindings");
                         done();
                     });
@@ -103,7 +102,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
             });
 
             it("Then sets the value into the input field", function (done) {
-                asap(function () {
+                setImmediate(function () {
                     expect(dom.querySelector("input").value).to.equal("123");
                     done();
                 });
@@ -115,7 +114,7 @@ describe("Given Nouage, a SeamView, an observed object", function () {
                 });
 
                 it("Then sets the value into the model", function (done) {
-                    asap(function () {
+                    setImmediate(function () {
                         expect(model.phone.work[0]).to.equal("3210");
                         done();
                     });
