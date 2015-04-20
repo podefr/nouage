@@ -356,11 +356,9 @@ module.exports = function BindPluginConstructor($model, $bindings) {
             if (_nb !== null && _start !== null) {
 
                 // Loop through the existing items
-                simpleLoop(_items, function (value, idx) {
+                _items.forEach(function (value, idx) {
                     // If an item is out of the boundary
-                    idx = Number(idx);
-
-                    if (idx < _start || idx >= (_start + _tmpNb) || !idx in _model) {
+                    if (idx < _start || idx >= (_start + _tmpNb) || _model.indexOf(idx) == -1) {
                         // Mark it
                         marked.push(idx);
                     }
