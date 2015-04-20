@@ -1,7 +1,7 @@
 {
   "name": "nouage",
-  "version": "0.0.1-wip",
-  "description": "Standalone data binding plugin based on Object.observe (es7)",
+  "version": "0.0.1-beta",
+  "description": "Seam data-binding plugin based on Object.observe (es7)",
   "main": "index.js",
   "scripts": {
     "test": "mocha --harmony test/*",
@@ -11,7 +11,8 @@
     "object.observe",
     "data",
     "binding",
-    "standalone"
+    "plugin",
+    "seam-view"
   ],
   "author": "Olivier Scherrer",
   "license": "MIT",
