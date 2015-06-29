@@ -494,9 +494,9 @@ module.exports = function BindPluginConstructor($model, $bindings) {
         }
 
         // Watch for changes
-        this.observers[prefixedName] = this.observers[prefixedName] || [];
+        this.observers["" + id || name] = this.observers["" + id || name] || [];
 
-        this.observers[prefixedName].push(_observer.observeValue(prefixedName, function (event) {
+        this.observers["" + id || name].push(_observer.observeValue(prefixedName, function (event) {
             var value = event.value;
 
             if (!this.execBinding.apply(this,
