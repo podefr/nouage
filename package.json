@@ -1,6 +1,6 @@
 {
   "name": "nouage",
-  "version": "0.0.2-beta",
+  "version": "0.0.3-beta",
   "description": "Seam data-binding plugin based on Object.observe (es7)",
   "main": "index.js",
   "scripts": {

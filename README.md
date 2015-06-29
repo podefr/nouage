@@ -10,7 +10,7 @@ Note that if you're into immutable data structure, this isn't for you ;)
 
 ## Status
 
-Beta. The API should be stable, there are memory leaks under investigation though.
+Beta. The API should be stable.
 
 ##Installation
 
@@ -23,6 +23,9 @@ var nouage = require('nouage');
 More to come...
 
 ##Changelog
+
+###0.0.3-beta - 28 JUNE 2015
+ * Fix memleak with data-foreach
 
 ###0.0.2-beta - 28 JUNE 2015
  * Fix tests and remove unused code
